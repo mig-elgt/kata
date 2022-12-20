@@ -1,31 +1,30 @@
 package graph
 
-import "gitlab.com/migel/kata/queue"
-
 func SortTopologicalGraph(vertices int, edges ...[]int) []int {
-	sortedOrder := []int{}
-	graph, inDegree := buildGraphAndInDegree(vertices, edges...)
-	nodeSources := findNodeSources(inDegree)
-	queue := queue.NewQueue(0)
-	for _, source := range nodeSources {
-		queue.Push(source)
-	}
-	for queue.Len() > 0 {
-		vertice := queue.Pop()
-		sortedOrder = append(sortedOrder, vertice)
-		children := graph[vertice]
-		for _, child := range children {
-			inDegree[child]--
-			if inDegree[child] == 0 {
-				queue.Push(child)
-			}
-		}
-	}
-	// topological sort is not possible as the graph has a cycle
-	if len(sortedOrder) != vertices {
-		return []int{}
-	}
-	return sortedOrder
+	panic("not impl")
+	// sortedOrder := []int{}
+	// graph, inDegree := buildGraphAndInDegree(vertices, edges...)
+	// nodeSources := findNodeSources(inDegree)
+	// queue := queue.NewQueue(0)
+	// for _, source := range nodeSources {
+	// 	queue.Push(source)
+	// }
+	// for queue.Len() > 0 {
+	// 	vertice := queue.Pop()
+	// 	sortedOrder = append(sortedOrder, vertice)
+	// 	children := graph[vertice]
+	// 	for _, child := range children {
+	// 		inDegree[child]--
+	// 		if inDegree[child] == 0 {
+	// 			queue.Push(child)
+	// 		}
+	// 	}
+	// }
+	// // topological sort is not possible as the graph has a cycle
+	// if len(sortedOrder) != vertices {
+	// 	return []int{}
+	// }
+	// return sortedOrder
 }
 
 func findNodeSources(inDegree map[int]int) []int {

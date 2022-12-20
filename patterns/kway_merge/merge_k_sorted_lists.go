@@ -2,8 +2,6 @@ package kmerge
 
 import (
 	"fmt"
-
-	"gitlab.com/migel/kata/heap"
 )
 
 type List struct {
@@ -38,19 +36,20 @@ func (this *ListNode) String() string {
 }
 
 func MergeKSortedLists(lists []*ListNode) *ListNode {
-	minHeap := heap.NewHeap(func(a, b *ListNode) bool { return a.Value > b.Value })
-	for _, list := range lists {
-		if list != nil {
-			minHeap.Push(list)
-		}
-	}
-	sortedList := List{}
-	for minHeap.Size() > 0 {
-		node, _ := minHeap.Pop()
-		sortedList.Append(&ListNode{Value: node.Value})
-		if node.Next != nil {
-			minHeap.Push(node.Next)
-		}
-	}
-	return sortedList.Head
+	panic("not impl")
+	// minHeap := heap.NewHeap(func(a, b *ListNode) bool { return a.Value > b.Value })
+	// for _, list := range lists {
+	// 	if list != nil {
+	// 		minHeap.Push(list)
+	// 	}
+	// }
+	// sortedList := List{}
+	// for minHeap.Size() > 0 {
+	// 	node, _ := minHeap.Pop()
+	// 	sortedList.Append(&ListNode{Value: node.Value})
+	// 	if node.Next != nil {
+	// 		minHeap.Push(node.Next)
+	// 	}
+	// }
+	// return sortedList.Head
 }
