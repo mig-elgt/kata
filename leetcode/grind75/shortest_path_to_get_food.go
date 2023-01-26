@@ -25,6 +25,7 @@ package grind75
 
 import (
 	"container/list"
+	"fmt"
 )
 
 func getFood(grid [][]byte) int {
@@ -33,35 +34,30 @@ out:
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[0]); j++ {
 			if grid[i][j] == '*' {
-				queue.PushBack([]int{i, j})
+				queue.PushBack([]int{i, j, 0})
 				break out
 			}
 		}
 	}
-	var distance int
+	directions := [][]int{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}
+	seen := map[string]int{}
 	for queue.Len() > 0 {
-		size := queue.Len()
-		for i := 0; i < size; i++ {
-			item := queue.Front()
-			cell := item.Value.([]int)
-			i, j := cell[0], cell[1]
-			directions := [][]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
-			for _, dir := range directions {
-				ii := i + dir[0]
-				jj := j + dir[1]
-				if ii >= 0 && ii < len(grid) && jj < len(grid[0]) && jj >= 0 {
-					if grid[ii][jj] == '#' {
-						return distance + 1
-					}
-					if grid[ii][jj] == 'O' {
-						queue.PushBack([]int{ii, jj})
-					}
+		item := queue.Front()
+		cell := item.Value.([]int)
+		i, j, step := cell[0], cell[1], cell[2]
+		if grid[i][j] == '#' {
+			return step
+		}
+		for _, dir := range directions {
+			newI, newJ := i+dir[0], j+dir[1]
+			if _, ok := seen[fmt.Sprintf("%v%v", newI, newJ)]; !ok {
+				if newI >= 0 && newI < len(grid) && newJ >= 0 && newJ < len(grid[0]) && grid[newI][newJ] != 'X' {
+					queue.PushBack([]int{newI, newJ, step + 1})
 				}
 			}
-			grid[i][j] = 'X'
-			queue.Remove(item)
 		}
-		distance++
+		grid[i][j] = 'X'
+		queue.Remove(item)
 	}
 	return -1
 }
