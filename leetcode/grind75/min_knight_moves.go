@@ -24,33 +24,36 @@ package grind75
 
 import (
 	"container/list"
-	"fmt"
 )
 
 func minKnightMoves(x int, y int) int {
-	queue := list.New()
-	queue.PushBack([]int{0, 0, 0})
-	seen := map[string]int{}
-	directions := [][]int{{2, 0, 0, 1}, {0, 2, 1, 0}, {-2, 0, 0, 1}, {0, -2, 1, 0}}
-	for queue.Len() > 0 {
-		item := queue.Front()
-		knight := item.Value.([]int)
-		if knight[0] == x && knight[1] == y {
-			return knight[2]
-		}
-		x, y := knight[0], knight[1]
-		p := fmt.Sprintf("%v,%v", x, y)
-		if _, visited := seen[p]; !visited {
-			for _, d := range directions {
-				carX, carY := x+d[0], y+d[1]
-				newOrtX1, newOrthY1 := carX+d[2], carY+d[3]
-				newOrtX2, newOrthY2 := (carX+d[2])*-1, (carY+d[3])*-1
-				queue.PushBack([]int{newOrtX1, newOrthY1, knight[2] + 1})
-				queue.PushBack([]int{newOrtX2, newOrthY2, knight[2] + 1})
-			}
-			seen[p] = 1
-		}
-		queue.Remove(item)
+	var steps int
+	visited := [][]bool{}
+	for i := 0; i < 607; i++ {
+		row := make([]bool, 607)
+		visited = append(visited, row)
 	}
-	return -1
+	queue := list.New()
+	queue.PushBack([]int{0, 0})
+	directions := [][]int{{1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}}
+	for queue.Len() > 0 {
+		levelSize := queue.Len()
+		for i := 0; i < levelSize; i++ {
+			item := queue.Front()
+			curr := item.Value.([]int)
+			if curr[0] == x && curr[1] == y {
+				return steps
+			}
+			for _, dir := range directions {
+				next := []int{curr[0] + dir[0], curr[1] + dir[1]}
+				if !visited[next[0]+302][next[1]+302] {
+					visited[next[0]+302][next[1]+302] = true
+					queue.PushBack(next)
+				}
+			}
+			queue.Remove(item)
+		}
+		steps++
+	}
+	return steps
 }
